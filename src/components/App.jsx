@@ -5,6 +5,7 @@ import ContactList from './contactList/ContactList';
 import SearchFilter from './searchFilter/SearchFilter';
 import { nanoid } from 'nanoid';
 import styles from './App.module.css';
+import storage from './service/storage'; // importăm modulul de lucru cu localStorage
 
 class App extends Component {
   state = {
@@ -15,28 +16,26 @@ class App extends Component {
   componentDidMount() {
     try {
       // Încărcăm datele din localStorage la începutul ciclului de viață
-      const storedContacts = localStorage.getItem('contacts');
+      const storedContacts = storage.load('contacts');
 
       if (storedContacts) {
         this.setState({
-          contacts: JSON.parse(storedContacts),
+          contacts: storedContacts,
         });
       }
     } catch (error) {
       console.error('Error loading data from localStorage:', error);
-      // Tratează eroarea sau oferă feedback utilizatorului, dacă este necesar.}
     }
   }
 
   componentDidUpdate(_prevProps, prevState) {
     try {
-      // Salvăm datele în localStorage daca datele au fost modificate
+      // Salvăm datele în localStorage dacă datele au fost modificate
       if (this.state.contacts !== prevState.contacts) {
-        localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+        storage.save('contacts', this.state.contacts);
       }
     } catch (error) {
       console.error('Error saving data to localStorage:', error);
-      // Tratează eroarea sau oferă feedback utilizatorului, dacă este necesar.
     }
   }
 
