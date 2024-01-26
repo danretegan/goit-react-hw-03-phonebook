@@ -13,20 +13,30 @@ class App extends Component {
   };
 
   componentDidMount() {
-    // Încărcăm datele din localStorage la începutul ciclului de viață
-    const storedContacts = localStorage.getItem('contacts');
+    try {
+      // Încărcăm datele din localStorage la începutul ciclului de viață
+      const storedContacts = localStorage.getItem('contacts');
 
-    if (storedContacts) {
-      this.setState({
-        contacts: JSON.parse(storedContacts),
-      });
+      if (storedContacts) {
+        this.setState({
+          contacts: JSON.parse(storedContacts),
+        });
+      }
+    } catch (error) {
+      console.error('Error loading data from localStorage:', error);
+      // Tratează eroarea sau oferă feedback utilizatorului, dacă este necesar.}
     }
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    // Salvăm datele în localStorage daca datele au fost modificate
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    try {
+      // Salvăm datele în localStorage daca datele au fost modificate
+      if (this.state.contacts !== prevState.contacts) {
+        localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      }
+    } catch (error) {
+      console.error('Error saving data to localStorage:', error);
+      // Tratează eroarea sau oferă feedback utilizatorului, dacă este necesar.
     }
   }
 
