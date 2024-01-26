@@ -8,19 +8,27 @@ import styles from './App.module.css';
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-0', name: 'Dan Retegan', number: '+40 753 023 616' },
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-123-563' },
-      { id: 'id-2', name: 'Hermione Kant', number: '443 (895) 123' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-177-799' },
-      {
-        id: 'id-4',
-        name: "Charles de-Batz de Castelmore d'Artagnan",
-        number: '+01 227-911-266',
-      },
-    ],
+    contacts: [],
     filter: '', // Adăugăm un câmp pentru filtrare
   };
+
+  componentDidMount() {
+    // Încărcăm datele din localStorage la începutul ciclului de viață
+    const storedContacts = localStorage.getItem('contacts');
+
+    if (storedContacts) {
+      this.setState({
+        contacts: JSON.parse(storedContacts),
+      });
+    }
+  }
+
+  componentDidUpdate(_prevProps, prevState) {
+    // Salvăm datele în localStorage daca datele au fost modificate
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   handleAddContact = (name, number) => {
     if (name.trim() !== '' && number.trim() !== '') {
