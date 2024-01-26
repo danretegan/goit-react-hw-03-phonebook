@@ -1,3 +1,4 @@
+// App.jsx
 import React from 'react';
 import { Component } from 'react';
 import ContactForm from './contactForm/ContactForm';
@@ -16,15 +17,14 @@ class App extends Component {
   componentDidMount() {
     try {
       // Încărcăm datele din localStorage la începutul ciclului de viață
-      const storedContacts = storage.load('contacts');
+      const storedContacts = storage.load('contacts') || [];
 
-      if (storedContacts) {
-        this.setState({
-          contacts: storedContacts,
-        });
-      }
+      this.setState({
+        contacts: storedContacts,
+      });
     } catch (error) {
       console.error('Error loading data from localStorage:', error);
+      // Tratează eroarea sau oferă feedback utilizatorului, dacă este necesar.}
     }
   }
 
@@ -36,6 +36,7 @@ class App extends Component {
       }
     } catch (error) {
       console.error('Error saving data to localStorage:', error);
+      // Tratează eroarea sau oferă feedback utilizatorului, dacă este necesar.
     }
   }
 

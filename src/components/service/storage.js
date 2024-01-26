@@ -1,17 +1,9 @@
 const serialize = value => {
-  try {
-    return JSON.stringify(value);
-  } catch (error) {
-    throw new Error(`Serialization failed: ${error.message}`);
-  }
+  return JSON.stringify(value);
 };
 
 const deserialize = serializedState => {
-  try {
-    return JSON.parse(serializedState);
-  } catch (error) {
-    throw new Error(`Deserialization failed: ${error.message}`);
-  }
+  return JSON.parse(serializedState);
 };
 
 const save = (key, value) => {
@@ -19,7 +11,7 @@ const save = (key, value) => {
     const serializedState = serialize(value);
     localStorage.setItem(key, serializedState);
   } catch (error) {
-    console.error(
+    throw new Error(
       `Save to localStorage failed for key '${key}': ${error.message}`
     );
   }
@@ -30,13 +22,12 @@ const load = key => {
     const serializedState = localStorage.getItem(key);
     return serializedState === null ? undefined : deserialize(serializedState);
   } catch (error) {
-    console.error(
+    throw new Error(
       `Load from localStorage failed for key '${key}': ${error.message}`
     );
   }
 };
 
-// Numele explicit pentru exportul implicit
 const storage = {
   save,
   load,
